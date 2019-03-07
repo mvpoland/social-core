@@ -374,7 +374,7 @@ class BaseOAuth2(OAuthAuth):
 
     def process_error(self, data):
         if data.get('error'):
-            if data['error'] == 'denied' or data['error'] == 'access_denied':
+            if 'denied' in data['error'] or 'cancelled' in data['error']:
                 raise AuthCanceled(self, data.get('error_description', ''))
             raise AuthFailed(self, data.get('error_description') or
                                    data['error'])
@@ -386,10 +386,16 @@ class BaseOAuth2(OAuthAuth):
         """Completes login process, must return user instance"""
         self.process_error(self.data)
         state = self.validate_state()
+        data, params = None, None
+        if self.ACCESS_TOKEN_METHOD == 'GET':
+            params = self.auth_complete_params(state)
+        else:
+            data = self.auth_complete_params(state)
 
         response = self.request_access_token(
             self.access_token_url(),
-            data=self.auth_complete_params(state),
+            data=data,
+            params=params,
             headers=self.auth_headers(),
             auth=self.auth_complete_credentials(),
             method=self.ACCESS_TOKEN_METHOD

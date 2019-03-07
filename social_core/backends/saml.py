@@ -42,9 +42,10 @@ class SAMLIdentityProvider(object):
         If you want to use the NameID, it's available via
         attributes['name_id']
         """
-        return attributes[
-            self.conf.get('attr_user_permanent_id', OID_USERID)
-        ][0]
+        uid = attributes[self.conf.get('attr_user_permanent_id', OID_USERID)]
+        if isinstance(uid, list):
+            uid = uid[0]
+        return uid
 
     # Attributes processing:
     def get_user_details(self, attributes):
@@ -92,23 +93,26 @@ class SAMLIdentityProvider(object):
         return self.conf['url']
 
     @property
-    def x509cert(self):
-        """X.509 Public Key Certificate for this IdP"""
-        return self.conf['x509cert']
-
-    @property
     def saml_config_dict(self):
         """Get the IdP configuration dict in the format required by
         python-saml"""
-        return {
+        result = {
             'entityId': self.entity_id,
             'singleSignOnService': {
                 'url': self.sso_url,
                 # python-saml only supports Redirect
                 'binding': 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
             },
-            'x509cert': self.x509cert,
         }
+        cert = self.conf.get('x509cert', None)
+        if cert:
+            result['x509cert'] = cert
+            return result
+        cert = self.conf.get('x509certMulti', None)
+        if cert:
+            result['x509certMulti'] = cert
+            return result
+        raise KeyError("IDP must contain x509cert or x509certMulti")
 
 
 class DummySAMLIdentityProvider(SAMLIdentityProvider):

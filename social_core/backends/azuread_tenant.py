@@ -88,6 +88,10 @@ class AzureADTenantOAuth2(AzureADOAuth2):
         return load_pem_x509_certificate(certificate.encode(),
                                          default_backend())
 
+    def get_user_id(self, details, response):
+        """Use subject (sub) claim as unique id."""
+        return response.get('sub')
+
     def user_data(self, access_token, *args, **kwargs):
         response = kwargs.get('response')
         id_token = response.get('id_token')
@@ -109,7 +113,7 @@ class AzureADTenantOAuth2(AzureADOAuth2):
                 id_token,
                 key=certificate.public_key(),
                 algorithms=algorithm,
-                audience=self.setting('SOCIAL_AUTH_AZUREAD_OAUTH2_KEY')
+                audience=self.setting('KEY')
             )
         except (DecodeError, ExpiredSignature) as error:
             raise AuthTokenError(self, error)

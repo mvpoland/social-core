@@ -7,13 +7,81 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/python-social-auth/social-core/commits/master)
 
+## [3.1.0](https://github.com/python-social-auth/social-core/releases/tag/3.1.0) - 2019-02-20
+
+### Added
+- Universe Ticketing backend
+- Auth0.com authentication backend
+
+### Changed
+- Update Bungie backend dropping any Django reference
+- Enable and fix JWT related tests
+- Remove PyPy support from Tox
+- Drop support for Python 3.4 in Tox
+- Allow to override JWT decode options in Open ID Connect base backend
+- Pass access token via Authorization header to Google user data url
+- Updated `user_data` method in `AzureADOAuth2` to return `access_token` if
+  `id_token` is not present in response
+
+## [3.0.0](https://github.com/python-social-auth/social-core/releases/tag/3.0.0) - 2019-01-14
+
+### Changed
+- Updated Azure B2C to extract first email from list if it's a list
+- Replace deprecated Google+ API usage with https://www.googleapis.com/oauth2/v3/userinfo
+- Updated Azure Tenant to fix Nonetype error
+- Updated comment denoting incorrect setting name
+- Yandex: do not fail when no email is present
+- Mediawiki: do not fail when no email is present
+- Mediawiki: enhance `get_user_details` to return more details
+
+## [2.0.0](https://github.com/python-social-auth/social-core/releases/tag/2.0.0) - 2018-10-28
+
+### Added
+- Telegram authentication backend
+- Keycloak backend is added with preliminary OAuth2 support
+- Globus OpenId Connect backend
+- Discord OAuth2 backend
+- SciStarter OAuth2 backend
+- Flat OAuth2 backend
+- ELIXIR OpenId Connect backend
+- Atlassian OAuth2 backend
+
+### Changed
+- GitHub backend now uses `state` parameter instead of `redirect_state`
+- Correct setting name on AzureAD Tenant backend
+- Introduce access token expired threshold of 5 seconds by default
+- Delete partial token from session if still present
+- Use `userPrincipalName` to set `username` and `email` accordingly
+- Send authorization headers to Kakao OAuth2, properly fill user details
+- LINE API update to v2.1
+- Use `unitest2` with Python 3
+- Update Slack backend to use computed usename on teams setups
+- Enforce `unicode_literals` on Slack backend
+- Update ORCID backend to support Member API
+- Updated Pixelpin backend to use the new OpenId Connect service
+- Update `sanitize_redirect` to invalidate redirects like `///evil.com`
+- Update Coinbase API endpoint
+- Dropped Python 3.3 support
+- Updated Weixin backend to use `urlencode` from `six`
+- Updated Google+ backend to properly process requests with `id_token`
+- Updated OpenId connect dependencies
+
+## [1.7.0](https://github.com/python-social-auth/social-core/releases/tag/1.7.0) - 2018-02-20
+
 ### Changed
 - Update EvenOnline token expiration key
 - Update OpenStreetMap URL to `https`
 - Fix LinkedIn backend to send the oauth_token as `Authorization` header
+- Fixed `extra_data` update to use the `alias` as key too
+- Make `signed_request` optional in Facebook App OAuth2 backend
+- Support string and lists on SAML permanent id value
+- Correct sending `params` sending on `GET` access-token retrieval case
+- Ensure b2c policy name check
+- Use `extras_requrie` to specify python specific version dependencies
 
 ### Added
 - Added support for AzureAD B2C OAuth2
+- Added LinkedIn Mobile OAuth2 backend
 
 ## [1.6.0](https://github.com/python-social-auth/social-core/releases/tag/1.6.0) - 2017-12-22
 

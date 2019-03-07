@@ -48,7 +48,7 @@ class BaseAuth(object):
         raise NotImplementedError('Implement in subclass')
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes login process, must return user instance"""
         raise NotImplementedError('Implement in subclass')
 
     def process_error(self, data):
@@ -139,7 +139,7 @@ class BaseAuth(object):
                 elif size == 1:
                     name = alias = entry[0]
                     discard = False
-                value = response.get(name) or details.get(name)
+                value = response.get(name) or details.get(name) or details.get(alias)
                 if discard and not value:
                     continue
                 data[alias] = value

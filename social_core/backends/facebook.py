@@ -89,7 +89,7 @@ class FacebookOAuth2(BaseOAuth2):
 
     @handle_http_errors
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes login process, must return user instance"""
         self.process_error(self.data)
         if not self.data.get('code'):
             raise AuthMissingParameter(self, 'code')
@@ -174,7 +174,7 @@ class FacebookAppOAuth2(FacebookOAuth2):
         return False
 
     def auth_complete(self, *args, **kwargs):
-        access_token = None
+        access_token = self.data.get('access_token')
         response = {}
 
         if 'signed_request' in self.data:

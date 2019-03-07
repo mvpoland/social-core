@@ -80,7 +80,7 @@ class AzureADB2COAuth2(AzureADOAuth2):
     @property
     def policy(self):
         policy = self.setting('POLICY')
-        if not policy or not policy.startswith('b2c_'):
+        if not policy or not policy.lower().startswith('b2c_'):
             raise AuthException('SOCIAL_AUTH_AZUREAD_B2C_OAUTH2_POLICY is '
                                 'required and should start with `b2c_`')
         return policy
@@ -151,7 +151,9 @@ class AzureADB2COAuth2(AzureADOAuth2):
         """
         details = super(AzureADB2COAuth2, self).get_user_details(response)
         if not details['email'] and response.get('emails'):
-            details['email'] = response['emails'][0]
+            details['email'] = response['emails']
+        if isinstance(details.get('email'), (list, tuple)):
+            details['email'] = details['email'][0]
         return details
 
     def get_public_key(self, kid):
