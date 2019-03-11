@@ -11,14 +11,14 @@ class WrongBackend(SocialAuthBaseException):
         self.backend_name = backend_name
 
     def __str__(self):
-        return _('Incorrect authentication service "{0}"'.format(
+        return _('Incorrect authentication service "{0}"').format(
             self.backend_name
-        ))
+        )
 
 
 class MissingBackend(WrongBackend):
     def __str__(self):
-        return _('Missing backend "{0}" entry'.format(self.backend_name))
+        return _('Missing backend "{0}" entry').format(self.backend_name)
 
 
 class NotAllowedToDisconnect(SocialAuthBaseException):
@@ -39,7 +39,7 @@ class AuthFailed(AuthException):
         msg = super(AuthFailed, self).__str__()
         if msg == 'access_denied':
             return _('Authentication process was canceled')
-        return _('Authentication failed: {0}'.format(msg))
+        return _('Authentication failed: {0}').format(msg)
 
 
 class AuthCanceled(AuthException):
@@ -51,7 +51,7 @@ class AuthCanceled(AuthException):
     def __str__(self):
         msg = super(AuthCanceled, self).__str__()
         if msg:
-            return _('Authentication process canceled: {0}'.format(msg))
+            return _('Authentication process canceled: {0}').format(msg)
         return _('Authentication process canceled')
 
 
@@ -59,14 +59,14 @@ class AuthUnknownError(AuthException):
     """Unknown auth process error."""
     def __str__(self):
         msg = super(AuthUnknownError, self).__str__()
-        return _('An unknown error happened while authenticating {0}'.format(msg))
+        return _('An unknown error happened while authenticating {0}').format(msg)
 
 
 class AuthTokenError(AuthException):
     """Auth token error."""
     def __str__(self):
         msg = super(AuthTokenError, self).__str__()
-        return _('Token error: {0}'.format(msg))
+        return _('Token error: {0}').format(msg)
 
 
 class AuthMissingParameter(AuthException):
@@ -76,7 +76,7 @@ class AuthMissingParameter(AuthException):
         super(AuthMissingParameter, self).__init__(backend, *args, **kwargs)
 
     def __str__(self):
-        return _('Missing needed parameter {0}'.format(self.parameter))
+        return _('Missing needed parameter {0}').format(self.parameter)
 
 
 class AuthStateMissing(AuthException):
